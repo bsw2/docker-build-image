@@ -2,7 +2,7 @@ docker-build-image
 ============
 
 [![Build Status](https://travis-ci.org/wangsha/docker-build-image.svg?branch=master)](https://travis-ci.org/wangsha/docker-build-image)
-[![Ansible Galaxy](https://img.shields.io/badge/AnsibleGalaxy-wangsha.docker--build-image-blue.svg)](https://galaxy.ansible.com/wangsha/docker-build-image/)
+[![Ansible Galaxy](https://img.shields.io/badge/AnsibleGalaxy-wangsha.docker--build--image-blue.svg)](https://galaxy.ansible.com/wangsha/docker-build-image/)
 
 Ansible role to manage and run the build-image docker container.
 
@@ -41,7 +41,7 @@ Use it in a playbook as follows:
       docker_registry_email: your_dockerhub_email
 ```
 
-- build and upload to your private registry
+- build and upload to your private registry with s3 backend
 
 ```yaml
 - hosts: 'servers'
@@ -57,6 +57,23 @@ Use it in a playbook as follows:
       docker_registry: localhost:3080
       docker_registry_login: no
 ```
+- build and upload to your private registry with local file system backend
+
+```yaml
+- hosts: 'servers'
+  roles:
+    - role: wangsha.docker-registry
+      docker_registry_directory_volumes:
+       - "/etc/registry/images:/var/lib/registry:rw"
+      docker_registry_file_volumes: []
+      become: true
+    - role: 'docker-build-image'
+      become: true
+      docker_registry: localhost:5000
+      docker_registry_login: no
+```
+
+
 
 Have a look at the [defaults/main.yml](defaults/main.yml) for role variables
 that can be overridden.
