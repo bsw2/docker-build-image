@@ -22,6 +22,8 @@ ansible-galaxy install wangsha.docker-build-image -p ./roles
 ```
 
 Use it in a playbook as follows:
+- build and upload to public registry (Docker Hub)
+
 ```yaml
 - hosts: 'servers'
   roles:
@@ -39,6 +41,23 @@ Use it in a playbook as follows:
       docker_registry_email: your_dockerhub_email
 ```
 
+- build and upload to your private registry
+
+```yaml
+- hosts: 'servers'
+  roles:
+    - role: docker-registry
+      docker_registry_ports:
+       - 3080:5000
+    - role: docker-build-image
+      app_source_repo: https://github.com/docker-library/hello-world.git
+      app_source_version: master
+      app_dockerfile_path: /
+      app_name: hello-world
+      docker_registry: localhost:3080
+      docker_registry_login: no
+```
+
 Have a look at the [defaults/main.yml](defaults/main.yml) for role variables
 that can be overridden.
 
@@ -46,6 +65,8 @@ that can be overridden.
 
 Additional References
 ---------------------
+- [ansible role to install docker deamon](https://github.com/angstwad/docker.ubuntu)
+- [ansible role to build private registry](https://galaxy.ansible.com/wangsha/docker-registry/)
 - [docker private registry](http://rominirani.com/2015/07/27/docker-tutorial-series-part-6-docker-private-registry/)
 - [docker hub](https://docs.docker.com/docker-hub/overview/)
 
