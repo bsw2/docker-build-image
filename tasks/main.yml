@@ -1,4 +1,5 @@
 - name: get app code
+  become: true
   git:
     repo: "{{ app_source_repo }}"
     accept_hostkey: yes
