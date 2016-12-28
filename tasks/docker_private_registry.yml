@@ -5,6 +5,7 @@
     tag: "{{ app_source_version }}"
     name: "{{ docker_registry }}/{{ docker_image_name }}"
     state: build
+    dockerfile: Dockerfile.build
 
 
 - name: push docker image {{ docker_registry }}/{{ docker_image_name }}:{{ app_source_version }} to {{ docker_registry }}
